@@ -2,3 +2,4 @@
 .env
 *.*.bak
 __pycache__
+.env_example
