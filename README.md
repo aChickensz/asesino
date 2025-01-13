@@ -1,6 +1,6 @@
-# The Assassin: A Virtual Card Game
+# Asesino: A Virtual Card Game
 
-**The Assassin** is a web-based platform designed to replace physical decks for the card game. It allows players to join a virtual lobby, receive their assigned card (role), and play the game in person, keeping the rules and interactions secret. The website’s primary goal is to distribute cards securely and visually display each player's card while facilitating a smooth and accessible experience. It removes the necessity of a physical deck of cards on hand.
+**Asesino** is a web-based platform designed to replace physical decks for the card game. It allows players to join a virtual lobby, receive their assigned card (role), and play the game in person, keeping the rules and interactions secret. The website’s primary goal is to distribute cards securely and visually display each player's card while facilitating a smooth and accessible experience. It removes the necessity of a physical deck of cards on hand.
 
 ---
 
