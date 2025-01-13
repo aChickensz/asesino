@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asesino - Join Game</title>
+
+  <!-- Linking to the CSS file from the /static folder using Flask's url_for -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='btn55.css') }}" />
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <script>
+    const socket = io.connect("{{ domain }}");
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Asesino</h1>
+    <p id="join-text">Enter your name to join the game.</p>
+    <form id="join-form">
+      <input type="text" id="player-name" placeholder="Enter your name" required />
+      <button type="submit" class='btn-55'><span>Join Game</span></button>
+    </form>
+    <div id="queue-section" class="hidden">
+      <h2>Waiting for the game to start...</h2>
+      <ul id="player-list"></ul>
+    </div>
+  </div>
+  <div class="copyright">
+        &copy; Kevin Vargas 2025
+  </div>
+  <!-- Linking to the main JavaScript file from the /static folder -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

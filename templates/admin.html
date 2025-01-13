@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Assassin - Admin</title>
+
+  <!-- Linking to the CSS file from the /static folder using Flask's url_for -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='btn55.css') }}" />
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <script>
+    const socket = io.connect("{{ domain }}");
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Panel</h1>
+    <form id="login-form">
+      <input type="password" id="admin-password" placeholder="Enter password" required"/>
+      <button type="submit"  class='btn-55' style="margin-top:7px;"><span>Login</span></button>
+    </form>
+
+    <div id="admin-dashboard" class="hidden">
+      <h2>Player Queue</h2>
+      <ul id="player-queue"></ul>
+      <button id="start-game-btn" style="margin-top:7px;">Start Game</button>
+    </div>
+  </div>
+  <div class="copyright">
+        &copy; Kevin Vargas 2025
+  </div>
+  <!-- Linking to the Admin JavaScript file from the /static folder -->
+  <script src="{{ url_for('static', filename='admin.js') }}"></script>
+</body>
+</html>

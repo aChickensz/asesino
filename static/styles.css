@@ -1,0 +1,107 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body Styling */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2e;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Container */
+  .container {
+    background-color: #2a2a3d;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  /* Headings */
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  /* Paragraph */
+  p {
+    margin-bottom: 15px;
+  }
+  
+  /* Input Field */
+  input[type="text"] {
+    padding: 10px;
+    width: 80%;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  /* Button */
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff3f34;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 7px;
+  }
+  
+  button:hover {
+    background-color: #e63e2d;
+  }
+  
+  /* Hidden Elements */
+  .hidden {
+    display: none;
+  }
+  
+  /* Player List */
+  #player-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+
+  #player-queue {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+  
+  #player-list li {
+    padding: 8px;
+    border-bottom: 1px solid #444;
+  }
+  
+  #player-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .copyright {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #555; /* Text color */
+    background-color: inherit; /* Same as parent's background */
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
