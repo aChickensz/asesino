@@ -11,21 +11,44 @@
   <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
   <script>
     const socket = io.connect("{{ domain }}");
+
+    document.getElementById('admin-play-checkbox').addEventListener('change', function () {
+      const usernameField = document.getElementById('admin-username-field');
+      usernameField.style.display = this.checked ? 'block' : 'none';
+    });
   </script>
 </head>
 <body>
   <div class="container">
     <h1>Admin Panel</h1>
-    <form id="login-form">
-      <input type="password" id="admin-password" placeholder="Enter password" required"/>
-      <button type="submit"  class='btn-55' style="margin-top:7px;"><span>Login</span></button>
-    </form>
 
-    <div id="admin-dashboard" class="hidden">
-      <h2>Player Queue</h2>
-      <ul id="player-queue"></ul>
-      <button id="start-game-btn" style="margin-top:7px;">Start Game</button>
+  <form id="login-form">
+    <input type="password" id="admin-password" placeholder="Enter password" required />
+    <div>
+      <label>
+        <input type="checkbox" id="admin-play-checkbox" checked />
+        Will admin play?
+      </label>
     </div>
+    <div id="admin-username-field" style="display: block;">
+      <input type="text" id="admin-username" placeholder="Enter admin username" required disabled />
+    </div>
+
+    <button type="submit" class='btn-55' style="margin-top:7px;"><span>Login</span></button>
+  </form>
+
+
+  <div id="admin-dashboard" class="hidden">
+    <h2>Player Queue</h2>
+    <ul id="player-queue"></ul>
+
+    <!-- Centered container for button and card -->
+    <div id="game-controls" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <button id="start-game-btn" style="margin-top:7px;">Start Game</button>
+      <div id="admin-card-container"></div> <!-- Placeholder for admin's card -->
+    </div>
+  </div>
+
   </div>
   <div class="copyright">
         &copy; Kevin Vargas 2025

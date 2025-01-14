@@ -72,45 +72,52 @@ def handle_join(data):
 
 @socketio.on('adminLogin')
 def handle_admin_login(data):
-    global admin_sid
+    global admin_sid, players
 
     password = data.get('password')
-    if password == ADMIN_PASSWORD:  # Replace with secure validation
+    will_play = data.get('willPlay', False)
+    username = data.get('username')
+
+    if password == ADMIN_PASSWORD:  # Authenticate admin
         admin_sid = request.sid
-        emit('updatePlayers', {'players': [player['name'] for player in players]}, room=admin_sid)
-        emit('loginSuccess')
-        print("Admin Joined")
+        emit('loginSuccess', room=admin_sid)
+
+        # If admin is playing, ensure the username is unique
+        if will_play and username:
+            if any(player['name'] == username for player in players):
+                emit('loginFailure', {'message': 'Username already taken'}, room=request.sid)
+                return
+
+            players.append({'name': username, 'sid': admin_sid})
+            emit('updatePlayers', {'players': [player['name'] for player in players]}, broadcast=True)
+
+        print(f"Admin logged in{' and will play as ' + username if will_play else ''}.")
     else:
-        emit('loginFailure', {'message': 'Invalid password'})
+        emit('loginFailure', {'message': 'Invalid password'}, room=request.sid)
 
 @socketio.on('startGame')
 def handle_start_game():
     global players, player_to_card
 
-    # Ensure only the admin can start the game
     if request.sid != admin_sid:
         emit('error', {'message': 'Only the admin can start the game'}, room=request.sid)
-        print("Non-admin attempted to start the game")
         return
 
-    # Ensure there are enough players to start the game
     if len(players) < 2:
         emit('error', {'message': 'Not enough players to start the game'}, room=request.sid)
-        print("Not enough players to start the game")
         return
 
-    # Prepare the deck: 1 joker and the rest as random cards from card1.svg to card26.svg
+    # Prepare the deck: 1 joker and the rest random cards
     regular_cards = [f'card{i}' for i in range(1, 27)]
     cards = ['joker'] + random.sample(regular_cards, len(players) - 1)
     random.shuffle(cards)
 
-    # Assign cards to players and emit the 'assignCard' event privately
+    # Assign cards to players
     for player, card in zip(players, cards):
         player_to_card[player['sid']] = card
         emit('assignCard', {'card': card}, room=player['sid'])
         print(f"Assigned card '{card}' to player '{player['name']}'")
 
-    # Broadcast that the game has started
     emit('gameStarted', broadcast=True)
     print("Game started, cards assigned")
 
