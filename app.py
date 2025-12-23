@@ -122,4 +122,12 @@ def handle_start_game():
     print("Game started, cards assigned")
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=PORT)
+    CERT_FILE = os.path.expanduser('~/ssl/cert.pem')
+    KEY_FILE = os.path.expanduser('~/ssl/key.pem')
+
+    socketio.run(
+        app,
+        host='0.0.0.0',
+        port=443,
+        ssl_context=(CERT_FILE, KEY_FILE)
+    )

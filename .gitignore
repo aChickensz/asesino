@@ -1,5 +1,19 @@
-*.bak
+# Security - never commit these!
+*.pem
 .env
-*.*.bak
-__pycache__
-.env_example
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Backup files
+*.bak
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
