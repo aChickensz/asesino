@@ -1,7 +1,6 @@
 const loginForm = document.getElementById('login-form');
 const passwordInput = document.getElementById('admin-password');
 const adminDashboard = document.getElementById('admin-dashboard');
-const playerList = document.getElementById('admin-player-list');
 const startGameBtn = document.getElementById('start-game-btn');
 
 // Admin state
@@ -104,13 +103,10 @@ if (document.readyState === 'loading') {
 }
 
 socket.on('loginSuccess', () => {
-  console.log('Login Success');
   isAuthenticated = true;
   localStorage.setItem('isAuthenticated', 'true');
   loginForm.classList.add('hidden');
   adminDashboard.classList.remove('hidden');
-  
-  // Request current state
   socket.emit('requestState');
 });
 
@@ -124,20 +120,14 @@ startGameBtn.addEventListener('click', () => {
     }
 });
 socket.on('updatePlayers', (data) => {
-    console.log('Admin received updatePlayers:', data);
     const playerQueue = document.getElementById('player-queue');
-    if (!playerQueue) {
-        console.error("Element with id 'player-queue' not found!");
-        return;
-    }
-    playerQueue.innerHTML = ''; // Clear current list
-
+    if (!playerQueue) return;
+    playerQueue.innerHTML = '';
     data.players.forEach((player) => {
         const li = document.createElement('li');
         li.textContent = player;
         playerQueue.appendChild(li);
     });
-    console.log(`Admin panel updated with ${data.players.length} players`);
 });
 
 socket.on('loginFailure', (data) => {
@@ -177,30 +167,17 @@ function showNewCardsBanner() {
 }
 
 socket.on('assignCard', (data) => {
-    const card = data.card;
-    console.log(`Admin received card: ${card}`);
-    
-    // Store card in localStorage
-    localStorage.setItem('adminCard', card);
-
+    localStorage.setItem('adminCard', data.card);
     const cardContainer = document.getElementById('admin-card-container');
-
-    // Remove any existing card display
     cardContainer.innerHTML = '';
-
-    // Add the card image
     const cardImage = document.createElement('img');
-    cardImage.src = `/static/images/${card}.svg`;
-    cardImage.alt = `Your card`;
-    cardImage.style.width = '150px'; // Optional: set width
-    cardImage.style.height = 'auto'; // Maintain aspect ratio
+    cardImage.src = `/static/images/${data.card}.svg`;
+    cardImage.alt = 'Your card';
+    cardImage.style.cssText = 'width:150px;height:auto';
     cardContainer.appendChild(cardImage);
 });
 
 socket.on('stateRestored', (data) => {
-    console.log('Admin state restored:', data);
-    
-    // Restore player list
     if (data.players) {
         const playerQueue = document.getElementById('player-queue');
         if (playerQueue) {
@@ -213,7 +190,6 @@ socket.on('stateRestored', (data) => {
         }
     }
     
-    // Restore admin card if playing
     if (data.adminCard) {
         localStorage.setItem('adminCard', data.adminCard);
         const cardContainer = document.getElementById('admin-card-container');
@@ -221,9 +197,8 @@ socket.on('stateRestored', (data) => {
             cardContainer.innerHTML = '';
             const cardImage = document.createElement('img');
             cardImage.src = `/static/images/${data.adminCard}.svg`;
-            cardImage.alt = `Your card`;
-            cardImage.style.width = '150px';
-            cardImage.style.height = 'auto';
+            cardImage.alt = 'Your card';
+            cardImage.style.cssText = 'width:150px;height:auto';
             cardContainer.appendChild(cardImage);
         }
     }
@@ -257,20 +232,16 @@ socket.on('connect', () => {
 });
 
 socket.on('disconnect', () => {
-    console.log('Client disconnected from server');
     updateConnectionStatus('disconnected', 'Disconnected');
 });
 
 socket.on('reconnect_attempt', (attemptNumber) => {
-    console.log(`Reconnection attempt ${attemptNumber}`);
     updateConnectionStatus('reconnecting', `Reconnecting... (${attemptNumber})`);
 });
 
-socket.on('reconnect', (attemptNumber) => {
-    console.log(`Reconnected after ${attemptNumber} attempts`);
+socket.on('reconnect', () => {
     updateConnectionStatus('connected', 'Connected');
     
-    // Auto-reauthenticate after reconnection
     const storedAuth = localStorage.getItem('isAuthenticated') === 'true';
     const storedPassword = localStorage.getItem('adminPassword');
     const storedWillPlay = localStorage.getItem('willPlay') === 'true';
@@ -284,18 +255,15 @@ socket.on('reconnect', (attemptNumber) => {
         });
     }
     
-    // Request state after reconnection
     if (isAuthenticated) {
         socket.emit('requestState');
     }
 });
 
-socket.on('reconnect_error', (error) => {
-    console.log('Reconnection error:', error);
+socket.on('reconnect_error', () => {
     updateConnectionStatus('reconnecting', 'Reconnecting...');
 });
 
 socket.on('reconnect_failed', () => {
-    console.log('Reconnection failed');
     updateConnectionStatus('disconnected', 'Connection Failed');
 });
